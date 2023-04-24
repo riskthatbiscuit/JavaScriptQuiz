@@ -39,3 +39,8 @@ div {
     align-items: center;
     justify-content:center;
 }
+
+h2, h3 {
+    border:1px solid red;
+    margin:0;
+}
