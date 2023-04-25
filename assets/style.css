@@ -19,7 +19,7 @@ header {
     padding: 0px 50px;
 }
 
-main {
+main, .container {
     display: flex;
     flex-direction:column;
     align-items: center;
@@ -44,3 +44,4 @@ h2, h3 {
     border:1px solid red;
     margin:0;
 }
+
