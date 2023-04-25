@@ -20,6 +20,7 @@ header {
 }
 
 main {
+    /* width: 50%; */
     display: flex;
     flex-direction:column;
     align-items: center;
@@ -62,7 +63,7 @@ li {
     font-size: 1.5em;
     line-height: 1.5;
 }
-
+/* 
 li:before {
     content: "\200B";
     position: absolute;
@@ -72,7 +73,7 @@ li::after {
     content: " ";
     display: block;
     clear: both;
-}
+} */
 
 li button {
     float: right;

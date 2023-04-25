@@ -40,6 +40,7 @@ function showStart(){
     description.textContent = "Welcome to the quiz! Please press Start to begin.";
     submit.style.display = "block";
     submit.textContent = "Start";
+    timerEl.style.display = "none";
     question.textContent = "";
     questionList.innerHTML = "";
 }
@@ -62,7 +63,7 @@ function removeStart(){
 function renderQuestion(){
     var question = questions[questionRef]
     questionText.textContent = question.question;
-
+    
     questionList.innerHTML = "";
     for (var i = 0; i <question.options.length; i++) {
         var quest = question.options[i];
@@ -70,16 +71,17 @@ function renderQuestion(){
         var li = document.createElement("li");
         li.textContent = quest;
         li.setAttribute("data-index",i);
-
+        
         var button = document.createElement("button");
         button.textContent = (i+1);
-
+        
         li.appendChild(button);
         questionList.appendChild(li);
     }
 }
 
 function startTimer() {
+    timerEl.style.display = "block";
     var timeInterval = setInterval(function () {
         if (ongoing === "No") {
             clearInterval(timeInterval);
@@ -121,8 +123,9 @@ function incomplete() {
 
 // Ending Quiz & Loading High Scores
 function endQuiz() {
-    addHighScore();
+    timerEl.style.display = "none";
     showStart();
+    addHighScore();
     ongoing = "No";
 }
 
@@ -131,6 +134,8 @@ function addHighScore() {
         const initials = prompt("Enter your initials for the new high score!");
         highScore = timeLeft;
         highScoreInitial = initials;
+    } else {
+        alert("You didn't get the new high score, better luck next time!")
     }
 }
 
