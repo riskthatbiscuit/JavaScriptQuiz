@@ -69,6 +69,21 @@ li button {
     font-size: 1em;
 }
 
+#submit {
+    background-color: #493ab8;
+    color: white;
+    margin: 10px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2em;
+    padding: 10px 30px;
+    transition: all 0.2s ease-in-out;
+}
+        
+#submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
 /* Media queries for smaller screens */
 @media only screen and (max-width: 600px) {
     header {
