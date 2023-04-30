@@ -61,9 +61,9 @@ function showStart(){
 
 function startQuiz(){
     removeStart();
+    timeLeft = startingTime;
     startTimer();
     questionRef = 0;
-    timeLeft = startingTime;
     ongoing = "Yes"
     renderQuestion();
 }
@@ -93,13 +93,13 @@ function renderQuestion(){
 }
 
 function startTimer() {
+    timerEl.textContent = "Time Left: " + timeLeft;
     timerEl.style.display = "block";
     var timeInterval = setInterval(function () {
         if (ongoing === "No") {
             clearInterval(timeInterval);
         }   else if (timeLeft > 0) {
-            console.log(timeLeft)
-            timerEl.textContent = timeLeft;
+            timerEl.textContent = "Time Left: " + timeLeft;
             timeLeft--;
         }   else {
             timerEl.textContent = "";
