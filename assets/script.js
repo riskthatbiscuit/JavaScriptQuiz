@@ -7,11 +7,14 @@ const description = document.querySelector("#description");
 const questionText = document.querySelector("#question")
 var questionList = document.querySelector("#questionList");
 var timerEl = document.getElementById('timeleft');
+var responseMsg = document.querySelector("#response");
+
 
 let highScore = localStorage.getItem("highscore");
-let highScoreInitial = localStorage.getItem("highscoreInit")
-let timeLeft = localStorage.getItem("timerCount")
-let questionRef = localStorage.getItem("questionRef")
+let highScoreInitial = localStorage.getItem("highscoreInit");
+let timeLeft = localStorage.getItem("timerCount");
+let questionRef = localStorage.getItem("questionRef");
+
 
 // Set up questions
 const question1 = {
@@ -53,6 +56,7 @@ function showStart(){
     submit.style.display = "block";
     submit.textContent = "Start";
     timerEl.style.display = "none";
+    responseMsg.textContent = "";
     question.textContent = "";
     questionList.innerHTML = "";
 }
@@ -61,7 +65,6 @@ function showStart(){
 
 function startQuiz(){
     removeStart();
-    timeLeft = startingTime;
     startTimer();
     questionRef = 0;
     ongoing = "Yes"
@@ -92,7 +95,7 @@ function renderQuestion(){
     }
 }
 
-function startTimer() {
+function startTimer(timeLeft = startingTime) {
     timerEl.textContent = "Time Left: " + timeLeft;
     timerEl.style.display = "block";
     var timeInterval = setInterval(function () {
@@ -111,8 +114,10 @@ function startTimer() {
 // Operating the Quiz
 function response(input) {
     if (input == questions[questionRef].correctOption) {
+        responseMsg.textContent = "Last question was Correct!";
     }   else {
-        incorrectAnswer();
+        responseMsg.textContent = "Last question was Incorrect!";
+        timeLeft = timeLeft-timePenalty;
     }
 
     if (questionRef === questions.length-1) {
@@ -132,6 +137,8 @@ function incomplete() {
     alert('You ran out of time!');
     endQuiz();
 }
+
+
 
 // Ending Quiz & Loading High Scores
 function endQuiz() {
