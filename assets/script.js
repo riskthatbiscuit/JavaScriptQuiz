@@ -10,10 +10,10 @@ var timerEl = document.getElementById('timeleft');
 var responseMsg = document.querySelector("#response");
 
 
-let highScore = localStorage.getItem("highscore");
-let highScoreInitial = localStorage.getItem("highscoreInit");
+let highScores = JSON.parse(localStorage.getItem("highscores")) || [];
 let timeLeft = localStorage.getItem("timerCount");
 let questionRef = localStorage.getItem("questionRef");
+
 
 
 // Set up questions
@@ -52,7 +52,7 @@ var ongoing = "no"
 
 function showStart(){
     description.style.display = "block";
-    description.textContent = "Welcome to the quiz! Please press Start to begin.";
+    description.innerHTML = "Welcome to JS Quiz! <br><br>This is a game where you have to answer as many JavaScript questions as you can before the time runs out. Each question will have four possible answers, and you have to choose the correct one.<br><br>For each incorrect answer, " + timePenalty + " seconds will be deducted from the remaining time. The game ends when all questions are answered or the timer reaches zero.<br><br>Your final score is number of seconds remaining on the timer.<br><br>Your score will be displayed on the screen at the end of the game, and if you achieve one of the top 5 high scores, your name and score will be added to the leaderboard.<br><br>Good luck, and have fun!";
     submit.style.display = "block";
     submit.textContent = "Start";
     timerEl.style.display = "none";
@@ -65,6 +65,7 @@ function showStart(){
 
 function startQuiz(){
     removeStart();
+    timeLeft = startingTime;
     startTimer();
     questionRef = 0;
     ongoing = "Yes"
@@ -95,7 +96,7 @@ function renderQuestion(){
     }
 }
 
-function startTimer(timeLeft = startingTime) {
+function startTimer() {
     timerEl.textContent = "Time Left: " + timeLeft;
     timerEl.style.display = "block";
     var timeInterval = setInterval(function () {
@@ -118,6 +119,7 @@ function response(input) {
     }   else {
         responseMsg.textContent = "Last question was Incorrect!";
         timeLeft = timeLeft-timePenalty;
+        console.log(timeLeft)
     }
 
     if (questionRef === questions.length-1) {
@@ -138,8 +140,6 @@ function incomplete() {
     endQuiz();
 }
 
-
-
 // Ending Quiz & Loading High Scores
 function endQuiz() {
     timerEl.style.display = "none";
@@ -149,17 +149,22 @@ function endQuiz() {
 }
 
 function addHighScore() {
-    if (highScore === null || timeLeft > highScore) {
-        const initials = prompt("Enter your initials for the new high score!");
-        highScore = timeLeft;
-        highScoreInitial = initials;
-    } else {
-        alert("You didn't get the new high score, better luck next time!")
-    }
+    const score = timeLeft;
+    const initials = prompt("Enter your initials for the new high score of " + score + "!");
+    const newScore = { initials, score };
+    highScores.push(newScore);
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 5);
+    localStorage.setItem("highscores", JSON.stringify(highScores));
 }
 
 function showHighScores(){
-    alert("The highest score so far is " + highScore + " by " + highScoreInitial)
+    let highScores = JSON.parse(localStorage.getItem("highscores")) || [];
+    let message = "Top 5 High Scores:\n";
+    highScores.forEach((score, index) => {
+        message += `${index + 1}. ${score.initials}: ${score.score}\n`;
+    });
+    alert(message);
 }
 
 // Add Listening Events for buttons
