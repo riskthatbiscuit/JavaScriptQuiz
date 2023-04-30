@@ -27,4 +27,4 @@ This project is licensed under the MIT license. See the `LICENSE` file for more 
 ![Screenshot](assets/JSQuizScreenshot.html.png)
 
 ### Link to deployed website
-[Website Link](https://riskthatbiscuit.github.io/PasswordGenerator/)
+[Website Link](https://riskthatbiscuit.github.io/JavaScriptQuiz/)
