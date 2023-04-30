@@ -15,18 +15,30 @@ let questionRef = localStorage.getItem("questionRef")
 
 // Set up questions
 const question1 = {
-    question: "What is the correct answer?",
-    options: ["1a","1b","1c","1d"],
-    correctOption: 0,
+  question: "What is the output of the following code snippet?\nconsole.log(typeof null);",
+  options: ["A) 'object'", "B) 'null'", "C) 'undefined'", "D) 'number'"],
+  correctOption: 0,
 }
 
 const question2 = {
-    question: "What is the correct answer to question 2?",
-    options: ["2a","2b","2c","2d"],
-    correctOption: 3,
+  question: "Which of the following is a higher-order function in Javascript?",
+  options: ["A) Array.map()", "B) Array.join()", "C) Array.filter()", "D) Array.reduce()"],
+  correctOption: 3,
 }
 
-const questions = [question1, question2];
+const question3 = {
+  question: "What does the 'this' keyword refer to in Javascript?",
+  options: ["A) The function in which it is used", "B) The global object", "C) The object that the function is a method of", "D) The first argument passed to a function"],
+  correctOption: 2,
+}
+
+const question4 = {
+  question: "Which of the following is not a valid way to create a new object in Javascript?",
+  options: ["A) Object.create()", "B) new Object()", "C) {} (Object literal)", "D) Object.make()"],
+  correctOption: 3,
+}
+
+const questions = [question1, question2, question3, question4];
 
 // Quiz Constraints
 var startingTime = 50;
