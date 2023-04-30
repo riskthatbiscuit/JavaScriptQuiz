@@ -24,9 +24,6 @@ main {
     justify-content: space-around;
 }
 
-h1 {
-}
-
 #description {
     width:100%;
     min-height: 100px;
@@ -44,6 +41,7 @@ ul {
     width:50%;
     list-style-type: none;
     padding: 0;
+    flex-wrap: wrap;
 }
 
 li {
@@ -54,7 +52,6 @@ li {
     background-color: #001b44;
     color: white;
     font-size: 1.5em;
-    line-height: 1.5;
 }
 
 li button {

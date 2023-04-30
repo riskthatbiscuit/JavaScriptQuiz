@@ -9,12 +9,15 @@ var questionList = document.querySelector("#questionList");
 var timerEl = document.getElementById('timeleft');
 var responseMsg = document.querySelector("#response");
 
-
+// Set variables to be stored locally
 let highScores = JSON.parse(localStorage.getItem("highscores")) || [];
 let timeLeft = localStorage.getItem("timerCount");
 let questionRef = localStorage.getItem("questionRef");
 
-
+// Quiz Constraints
+var startingTime = 50;
+var timePenalty = 10;
+var ongoing = "no"
 
 // Set up questions
 const question1 = {
@@ -43,16 +46,10 @@ const question4 = {
 
 const questions = [question1, question2, question3, question4];
 
-// Quiz Constraints
-var startingTime = 50;
-var timePenalty = 10;
-var ongoing = "no"
-
 // Set up initial page
-
 function showStart(){
     description.style.display = "block";
-    description.innerHTML = "Welcome to JS Quiz! <br><br>This is a game where you have to answer as many JavaScript questions as you can before the time runs out. Each question will have four possible answers, and you have to choose the correct one.<br><br>For each incorrect answer, " + timePenalty + " seconds will be deducted from the remaining time. The game ends when all questions are answered or the timer reaches zero.<br><br>Your final score is number of seconds remaining on the timer.<br><br>Your score will be displayed on the screen at the end of the game, and if you achieve one of the top 5 high scores, your name and score will be added to the leaderboard.<br><br>Good luck, and have fun!";
+    description.innerHTML = "Welcome to JS Quiz! <br><br>This is a game where you have to answer as many JavaScript questions as you can before the time runs out. Each question will have four possible answers, and you have to choose the correct one.<br><br>For each incorrect answer, " + timePenalty + " seconds will be deducted from the remaining time. The game ends when all questions are answered or the timer reaches zero.<br><br>You will start with " + startingTime + " seconds. Your final score is number of seconds remaining on the timer.<br><br>Your score will be displayed on the screen at the end of the game, and if you achieve one of the top 5 high scores, your name and score will be added to the leaderboard.<br><br>Good luck, and have fun!";
     submit.style.display = "block";
     submit.textContent = "Start";
     timerEl.style.display = "none";
@@ -61,8 +58,8 @@ function showStart(){
     questionList.innerHTML = "";
 }
 
-// Starting Quiz
-
+// ---- Starting Quiz ----
+// StartQuiz removes initial text, starts timer and posts the first question
 function startQuiz(){
     removeStart();
     timeLeft = startingTime;
@@ -71,23 +68,24 @@ function startQuiz(){
     ongoing = "Yes"
     renderQuestion();
 }
-
+// removes the initial text
 function removeStart(){
     submit.style.display = "none";
     description.style.display = "none";
 }
+// Posts the first question
 function renderQuestion(){
     var question = questions[questionRef]
     questionText.textContent = question.question;
-    
     questionList.innerHTML = "";
+    // Loop through each of the questions in questions array
     for (var i = 0; i <question.options.length; i++) {
         var quest = question.options[i];
-        
+        // Create list for answers under quesiton
         var li = document.createElement("li");
         li.textContent = quest;
         li.setAttribute("data-index",i);
-        
+        // Create buttons for each answer
         var button = document.createElement("button");
         button.textContent = (i+1);
         
@@ -95,10 +93,12 @@ function renderQuestion(){
         questionList.appendChild(li);
     }
 }
-
+// Starts the timer
 function startTimer() {
+    // Show timer in top right
     timerEl.textContent = "Time Left: " + timeLeft;
     timerEl.style.display = "block";
+    // Start countdown & set rules for when to break
     var timeInterval = setInterval(function () {
         if (ongoing === "No") {
             clearInterval(timeInterval);
@@ -112,42 +112,39 @@ function startTimer() {
         }
     },1000);
 }
-// Operating the Quiz
+// ---- Operating the Quiz----
+// Recieving a response
 function response(input) {
+    // Determining and printing outcome as well as reducing time left if incorrect score
     if (input == questions[questionRef].correctOption) {
         responseMsg.textContent = "Last question was Correct!";
     }   else {
         responseMsg.textContent = "Last question was Incorrect!";
         timeLeft = timeLeft-timePenalty;
-        console.log(timeLeft)
     }
-
+    // Determining if end of quiz or moving to next question
     if (questionRef === questions.length-1) {
-        let score = timeLeft;
         endQuiz()
     }   else {
         questionRef++;
         renderQuestion();
     }
 }
-
-function incorrectAnswer () {
-    timeLeft = timeLeft-timePenalty;
-}
-
+// Setting rules if timer runs out
 function incomplete() {
     alert('You ran out of time!');
     endQuiz();
 }
 
-// Ending Quiz & Loading High Scores
+// ---- Ending Quiz & Loading High Scores ----
+// At the end of the quiz, the questions are no longer shown, landing page re-shown, highscore added.
 function endQuiz() {
     timerEl.style.display = "none";
     showStart();
     addHighScore();
     ongoing = "No";
 }
-
+// Adding a new high score to the locally stored array of HighScores
 function addHighScore() {
     const score = timeLeft;
     const initials = prompt("Enter your initials for the new high score of " + score + "!");
@@ -158,6 +155,7 @@ function addHighScore() {
     localStorage.setItem("highscores", JSON.stringify(highScores));
 }
 
+// Adding funciton to show HighScores if button pressed
 function showHighScores(){
     let highScores = JSON.parse(localStorage.getItem("highscores")) || [];
     let message = "Top 5 High Scores:\n";
@@ -167,7 +165,7 @@ function showHighScores(){
     alert(message);
 }
 
-// Add Listening Events for buttons
+// ---- Add Listening Events for buttons ----
 submit.addEventListener("click", startQuiz);
 
 highscores.addEventListener("click", showHighScores)
